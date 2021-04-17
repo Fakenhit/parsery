@@ -24,21 +24,29 @@
 		}
 	}
     // $array_query = ["Электропускатели"]; in_array # TODO
-    $parse_query = urlencode('Электропускатели');
-	$htg = getPageByUrl("https://www.google.com/search?q=$parse_query&start=10");
+	$htg = getPageByUrl("https://essonline.uz/");
     $htg2 = <<<SITE
         {$htg}
     SITE;
-    $re = '/<a[ \w\-_=\"]*?(href=\")(http[s]*?:\/\/([\w.\/?=&-_]{1,}))[\D \d\"]*?(<h3[\D \d=_-]*?>([\D\d]*?)<\/h3>)[\D\d]*?<\/a>/m';
+    // $re = '/([+]{0,1}[\d\-)( ]{10,})/m';
+    $re = '/([+]{0,1}[35789()]{1}[\d\-)( ]{9,})/m';
     // echo $htg;
     preg_match_all($re, $htg2, $matches, PREG_SET_ORDER, 0);
 
     // Print the entire match result
     // var_dump($matches);
+    $temp_array_key = [];
     foreach ($matches as $key) {
-        echo "<a href='{$key[2]}' style='color: red; font-size: 14px; '>{$key[4]}</a><br/>";
-    }
+        foreach($key as $phones) {
+            $temp_array_key[] = $phones;
+        }
 
+        // echo var_dump($key);
+    }
+    foreach (array_unique($temp_array_key) as $phone) {
+        echo $phone;
+        echo "<br/>";
+    }
     // ([+]{0,1}[\d-)( ]{8,}) TODO
     
     // Регулярка для номера телефона
